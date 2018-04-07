@@ -17,10 +17,6 @@ Download the build at [libs/planets.js](libs/planets.js) and include it as a scr
 <script src='planets.js'></script>
 ```
 
-## Features
-- [x] Create static, texture-based planets.
-- [x] 
-
 ## Examples
 
 You can use [the interactive planet builder tool](builder.html) to create planets and export the corresponding code.
@@ -29,4 +25,4 @@ You can also see other examples in the [examples directory](examples/)
 
 ## Documentation
 
-You can find [the docs here](ttps://github.com/IDEO-coLAB/Planets.js).
+You can find [the docs here](ttps://github.com/IDEO-coLAB/Planets.js/wiki).
