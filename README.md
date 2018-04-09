@@ -10,7 +10,7 @@ Planets.js is a simple library built on Three.js that creates procedural and tex
 
 ### Script
 
-Download the build at [libs/planets.js](libs/planets.js) and include it as a script tag in a web page. You must include [three.js](https://threejs.org/) as well, and planets.js must be included after.
+Download the build at [libs/planets.js](src/planets.js) and include it as a script tag in a web page. You must include [three.js](https://threejs.org/) as well, and planets.js must be included after.
 
 ```html
 <script src='three.js'></script>
