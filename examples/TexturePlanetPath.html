@@ -75,15 +75,15 @@ updateFcts.push(function(delta, now) {
 });
 
 // Render the scene
-updateFcts.push(function(){
-  renderer.render( scene, camera );
+updateFcts.push(function() {
+  renderer.render(scene, camera);
 });
 
 // Loop Runner
 var lastTimeMsec = null;
 requestAnimationFrame(function animate(nowMsec) {
   // continue to loop
-  requestAnimationFrame( animate );
+  requestAnimationFrame(animate);
   // measure time
   lastTimeMsec = lastTimeMsec || (nowMsec - 1000 / 60);
   var deltaMsec = Math.min(200, nowMsec - lastTimeMsec);
