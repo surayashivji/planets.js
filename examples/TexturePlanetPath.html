@@ -37,20 +37,20 @@ renderer.antialias = true;
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById("sketch").appendChild(renderer.domElement);
 
-var updateFcts	= [];
+var updateFcts = [];
 
 // Initialize Scene
-var scene	= new THREE.Scene();
+var scene = new THREE.Scene();
 
 // Setup Ccamera
-var camera	= new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 100 );
+var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 100 );
 camera.position.z = 1.5;
 
 // Add lighting to the scene
-var ambientLight	= new THREE.AmbientLight(0x888888);
+var ambientLight = new THREE.AmbientLight(0x888888);
 scene.add(ambientLight);
 
-var directionalLight	= new THREE.DirectionalLight(0xcccccc, 1);
+var directionalLight = new THREE.DirectionalLight(0xcccccc, 1);
 directionalLight.position.set(5,5,5);
 directionalLight.castShadow = true;
 scene.add(directionalLight);
@@ -58,15 +58,15 @@ scene.add(directionalLight);
 // Create Planet with Planet.js!
 // Texture from http://planetpixelemporium.com/.
 var planet = new TexturePlanet(0.5, 32, 32);
-var planetPath	= planet.createPlanetFromPath("plutomap1k.jpg", "plutobump1k.jpg");
+var planetPath = planet.createPlanetFromPath("plutomap1k.jpg", "plutobump1k.jpg");
 planetPath.name = "our-planet";
 
 // Setup Camera Controls
 // Allows you to move the planet based on your mouse movement
-var mouse	= {x : 0, y : 0};
+var mouse = {x : 0, y : 0};
 document.addEventListener('mousemove', function(event) {
-  mouse.x	= (event.clientX / window.innerWidth ) - 0.5;
-  mouse.y	= (event.clientY / window.innerHeight) - 0.5;
+  mouse.x = (event.clientX / window.innerWidth ) - 0.5;
+  mouse.y = (event.clientY / window.innerHeight) - 0.5;
 }, false);
 updateFcts.push(function(delta, now) {
   camera.position.x += (mouse.x*5 - camera.position.x) * (delta*3);
