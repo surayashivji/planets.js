@@ -7,7 +7,6 @@
 }
 
 #sketch {
-  display: block;
 }
 
 button {
@@ -25,7 +24,7 @@ button {
 input {
   background-color: white;
   color: black;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   height: 2rem;
   padding: 0 2rem;
   margin: 10px 0;
@@ -41,6 +40,7 @@ input {
 }
 .tp-info {
   margin: 3em;
+  position: fixed;
 }
 .tp-description {
   padding: 10px 0;

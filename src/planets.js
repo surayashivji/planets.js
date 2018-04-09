@@ -44,7 +44,7 @@ Creates a textured planet based on a url.
 @param String - bumpMapPath: (optional) url path to the path that creates a bump map (See https://threejs.org/docs/#api/materials/MeshPhongMaterial.bumpMap)
 @return THREE.Mesh - polygon mesh planet (See https://threejs.org/docs/#api/objects/Mesh).
 */
-TexturePlanet.prototype.createPlanetFromUrl = function(urlPath, bumpMapUrlPath = localPath) {
+TexturePlanet.prototype.createPlanetFromUrl = function(urlPath, bumpMapUrlPath = urlPath) {
   var geometry	= new THREE.SphereGeometry(this.geometrySize.radius, this.geometrySize.width, this.geometrySize.height);
   var textureLoader = new THREE.TextureLoader();
   textureLoader.crossOrigin = "Anonymous";

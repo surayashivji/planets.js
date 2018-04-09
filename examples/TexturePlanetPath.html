@@ -14,7 +14,7 @@
     <div class="tp-heading">Texture Planet (Local)</div>
     <div class="tp-description">A planet based on a texture in a local path.</div>
     <br>
-    <div class="tp-intructions">Based on the local texture <b>"plutomap1k.jpg."</b></div>
+    <div class="tp-intructions">Using the the local texture <b>"plutomap1k.jpg."</b></div>
     <button onclick="submitPlanetPath()">Generate Planet</button>
   </div>
   <div id="sketch"></div>
@@ -25,8 +25,10 @@
 
 // HTML Functions (Demo purposes only)
 function submitPlanetPath() {
-  // add planet to the scene if it already hasn't been loaded
-  scene.add(planetPath);
+  // add planet to the scene if it already hasn't been added
+  if(!scene.getObjectByName('our-planet')) {
+    scene.add(planetPath);
+  }
 }
 
 // Setup Renderer
@@ -51,23 +53,13 @@ scene.add(ambientLight);
 var directionalLight	= new THREE.DirectionalLight(0xcccccc, 1);
 directionalLight.position.set(5,5,5);
 directionalLight.castShadow = true;
-directionalLight.shadowCameraNear = 0.01;
-directionalLight.shadowCameraFar = 15;
-directionalLight.shadowCameraFov = 45;
-directionalLight.shadowCameraLeft = -1;
-directionalLight.shadowCameraRight = 1;
-directionalLight.shadowCameraTop	= 1;
-directionalLight.shadowCameraBottom = -1;
-directionalLight.shadowBias = 0.001;
-directionalLight.shadowDarkness = 0.2;
-directionalLight.shadowMapWidth = 1024*2;
-directionalLight.shadowMapHeight = 1024*2;
 scene.add(directionalLight);
 
 // Create Planet with Planet.js!
+// Texture from http://planetpixelemporium.com/.
 var planet = new TexturePlanet(0.5, 32, 32);
-var planetPath	= planet.createPlanetFromPath("../plutomap1k.jpg", "../plutobump1k.jpg");
-
+var planetPath	= planet.createPlanetFromPath("plutomap1k.jpg", "plutobump1k.jpg");
+planetPath.name = "our-planet";
 
 // Setup Camera Controls
 // Allows you to move the planet based on your mouse movement

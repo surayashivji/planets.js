@@ -15,7 +15,8 @@
     <div class="tp-description">A planet based on a texture from an URL.</div>
     <br>
     <div class="tp-intructions">Enter the URL of a png or jpg texture.</div>
-    <input type="url" placeholder="URL">
+    <!-- Example URL: https://i.imgur.com/gSefqPq.jpg -->
+    <input id="url-input" type="url" placeholder="http://www.example.com/image.png"></input>
     <button onclick="submitPlanetURL()">Generate Planet (URL)</button>
   </div>
   <div id="sketch"></div>
@@ -24,9 +25,22 @@
 <script src='../src/planets.js'></script>
 <script>
 
-// HTML Functions (Demo purposes only)
+// Create Planet with Planet.js and handle HTML Input
+var planet = new TexturePlanet(0.5, 32, 32);
+
 function submitPlanetURL() {
-  scene.add(planetURL);
+  var url = document.getElementById("url-input").value;
+  if(url) {
+    if(scene.getObjectByName("our-planet")) {
+      // remove existing planets
+      scene.remove(planetURL);
+    }
+    var planetURL = planet.createPlanetFromUrl(url);
+    planetURL.name = "our-planet";
+    scene.add(planetURL);
+  } else {
+    alert("Please enter a URL");
+  }
 }
 
 // Setup Renderer
@@ -51,22 +65,7 @@ scene.add(ambientLight);
 var directionalLight	= new THREE.DirectionalLight(0xcccccc, 1);
 directionalLight.position.set(5,5,5);
 directionalLight.castShadow = true;
-directionalLight.shadowCameraNear = 0.01;
-directionalLight.shadowCameraFar = 15;
-directionalLight.shadowCameraFov = 45;
-directionalLight.shadowCameraLeft = -1;
-directionalLight.shadowCameraRight = 1;
-directionalLight.shadowCameraTop	= 1;
-directionalLight.shadowCameraBottom = -1;
-directionalLight.shadowBias = 0.001;
-directionalLight.shadowDarkness = 0.2;
-directionalLight.shadowMapWidth = 1024*2;
-directionalLight.shadowMapHeight = 1024*2;
 scene.add(directionalLight);
-
-// Create Planet with Planet.js!
-var planet = new TexturePlanet(0.5, 32, 32);
-var planetURL = planet.createPlanetFromUrl("https://i.imgur.com/gSefqPq.jpg", "https://i.imgur.com/ivzvxEe.jpg");
 
 // Setup Camera Controls
 // Allows you to move the planet based on your mouse movement
