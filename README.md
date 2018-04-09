@@ -21,7 +21,7 @@ Download the build at [libs/planets.js](src/planets.js) and include it as a scri
 
 You can use [the interactive planet builder tool](builder.html) to see the attributes' effects  on a planet in real time.
 
-Alternatively, you can see other demos in the [examples directory](examples/)
+Alternatively, you can see demos in the [examples directory](examples/)
 
 ## Documentation
 

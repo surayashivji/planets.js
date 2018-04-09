@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Texture Planet Local Path Example</title>
+  <link rel="shortcut icon" href="../../favicon.png">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,600" rel='stylesheet'>
+  <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+  <div class="tp-info">
+    <div class="tp-heading">Texture Planet (Local)</div>
+    <div class="tp-description">A planet based on a texture in a local path.</div>
+    <br>
+    <div class="tp-intructions">Based on the local texture <b>"plutomap1k.jpg."</b></div>
+    <button onclick="submitPlanetPath()">Generate Planet</button>
+  </div>
+  <div id="sketch"></div>
+</body>
+<script src='../libs/three.js'></script>
+<script src='../src/planets.js'></script>
+<script>
+
+// HTML Functions (Demo purposes only)
+function submitPlanetPath() {
+  // add planet to the scene if it already hasn't been loaded
+  scene.add(planetPath);
+}
+
+// Setup Renderer
+var renderer = new THREE.WebGLRenderer();
+renderer.antialias = true;
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.getElementById("sketch").appendChild(renderer.domElement);
+
+var updateFcts	= [];
+
+// Initialize Scene
+var scene	= new THREE.Scene();
+
+// Setup Ccamera
+var camera	= new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 100 );
+camera.position.z = 1.5;
+
+// Add lighting to the scene
+var ambientLight	= new THREE.AmbientLight(0x888888);
+scene.add(ambientLight);
+
+var directionalLight	= new THREE.DirectionalLight(0xcccccc, 1);
+directionalLight.position.set(5,5,5);
+directionalLight.castShadow = true;
+directionalLight.shadowCameraNear = 0.01;
+directionalLight.shadowCameraFar = 15;
+directionalLight.shadowCameraFov = 45;
+directionalLight.shadowCameraLeft = -1;
+directionalLight.shadowCameraRight = 1;
+directionalLight.shadowCameraTop	= 1;
+directionalLight.shadowCameraBottom = -1;
+directionalLight.shadowBias = 0.001;
+directionalLight.shadowDarkness = 0.2;
+directionalLight.shadowMapWidth = 1024*2;
+directionalLight.shadowMapHeight = 1024*2;
+scene.add(directionalLight);
+
+// Create Planet with Planet.js!
+var planet = new TexturePlanet(0.5, 32, 32);
+var planetPath	= planet.createPlanetFromPath("../plutomap1k.jpg", "../plutobump1k.jpg");
+
+
+// Setup Camera Controls
+// Allows you to move the planet based on your mouse movement
+var mouse	= {x : 0, y : 0};
+document.addEventListener('mousemove', function(event) {
+  mouse.x	= (event.clientX / window.innerWidth ) - 0.5;
+  mouse.y	= (event.clientY / window.innerHeight) - 0.5;
+}, false);
+updateFcts.push(function(delta, now) {
+  camera.position.x += (mouse.x*5 - camera.position.x) * (delta*3);
+  camera.position.y += (mouse.y*5 - camera.position.y) * (delta*3);
+  camera.lookAt(scene.position);
+});
+
+// Render the scene
+updateFcts.push(function(){
+  renderer.render( scene, camera );
+});
+
+// Loop Runner
+var lastTimeMsec = null;
+requestAnimationFrame(function animate(nowMsec) {
+  // continue to loop
+  requestAnimationFrame( animate );
+  // measure time
+  lastTimeMsec = lastTimeMsec || (nowMsec - 1000 / 60);
+  var deltaMsec = Math.min(200, nowMsec - lastTimeMsec);
+  lastTimeMsec = nowMsec
+  // call each update function
+  updateFcts.forEach(function(updateFn) {
+    updateFn(deltaMsec / 1000, nowMsec / 1000);
+  });
+});
+
+</script>
+</html>
