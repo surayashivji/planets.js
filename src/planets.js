@@ -1,4 +1,6 @@
-// Texture Planets: predefined (non-procedural) starter planets based on existing textures
+//////////////////////////////////////////////////////////////////////////////////
+// Texture Planets: planets that use existing textures (not procedural).
+//////////////////////////////////////////////////////////////////////////////////
 
 /*
 TexturePlanet
@@ -58,4 +60,14 @@ TexturePlanet.prototype.createPlanetFromUrl = function(urlPath, bumpMapUrlPath =
   material.needsUpdate = true;
   var mesh	= new THREE.Mesh(geometry, material);
   return mesh;
+};
+
+//////////////////////////////////////////////////////////////////////////////////
+// Procedural Planets: Planets that can be updated and changed in real time.
+//////////////////////////////////////////////////////////////////////////////////
+
+/*
+Procedural Planets
+*/
+function ProceduralPlanet() {
 };
