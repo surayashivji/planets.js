@@ -29,21 +29,25 @@ input {
   width: 230px;
 }
 
-/* Texture Planet Examples (TexturePlanetPath.html and TexturePlanetURL.html) */
-.tp-heading {
+.planet-heading {
   font-size: 32px;
   font-weight: 600;
   padding-bottom: 10px;
 }
-.tp-info {
+.planet-info {
   margin: 3em;
   position: fixed;
 }
-.tp-description {
+.planet-description {
   padding: 10px 0;
   font-size: 20px;
 }
-.tp-instructions {
+.planet-instructions {
   padding: 10px 0;
   font-size: 15px;
+}
+
+#star-sketch {
+  width: 100% !important;
+  height: 100% !important;
 }

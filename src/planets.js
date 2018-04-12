@@ -67,21 +67,38 @@ TexturePlanet.prototype.createPlanetFromUrl = function(urlPath, bumpMapUrlPath =
 //////////////////////////////////////////////////////////////////////////////////
 
 /*
-Star Planets
+StarColor
+
+@param String (Hex Code) - coronaColor: surrounding glow color of the star.
+@param String (Hex Code) - coreColor: primary color of the star (center).
+@param String (Hex Code) - innerBorderColor: color for the thin inner border of the star.
+@param String (Hex Code) - outerBorderColor: color for the thin outer border of the star.
+@param Number (Range 0-1) - intensity: intensity of the star's colors.
 */
-function StarColor(coronaColor, coreColor, innerBorderColor, outerBorderColor) {
+function StarColor(coronaColor, coreColor, innerBorderColor, outerBorderColor, intensity) {
   this.corona = coronaColor;
   this.core = coreColor;
   this.innerBorder = innerBorderColor;
   this.outerBorder = outerBorderColor;
+  this.intensity = intensity;
 }
 
+/*
+StarPlanets
+
+@param Number - radius: sphere radius of star.
+@param StarColor - starPlanetColor: StarColor object with each color component of the star.
+@param Number (Range 0-1) - particleDisplacement: how spread out the star's particles are.
+@param Number (Range 0-0.01) - timeMultiplier: how fast the star's particles move.
+*/
 function StarPlanet(radius, starPlanetColor, particleDisplacement, timeMultiplier) {
   this.radius = radius;
   this.colors = starPlanetColor;
   this.shaders = {};
   this.timeMultiplier = timeMultiplier;
   this.displacement = particleDisplacement;
+  this.starObject = new THREE.Object3D();
+  this.start_time =+ new Date();
   this.starMaterialUniforms = {
     sphere_radius:
     {
@@ -126,7 +143,7 @@ function StarPlanet(radius, starPlanetColor, particleDisplacement, timeMultiplie
     ratio_step_1:
     {
         type  : 'f',
-        value : 0.4
+        value : starPlanetColor.intensity
     },
     ratio_step_2:
     {
@@ -139,15 +156,17 @@ function StarPlanet(radius, starPlanetColor, particleDisplacement, timeMultiplie
         value : this.displacement
     }
   };
-
-  this.starObject = new THREE.Object3D();
-  this.start_time =+ new Date();
   THREE.Cache.enabled = true;
 }
 
+/*
+Creates the base sphere geometry for the star.
+
+@param Dictionary - shader: dict of shaders (value) and their names (keys) for the Star planet.
+*/
 StarPlanet.prototype.createSphereObject = function(shader) {
-var sphereVertexShader   = document.getElementById( 'shader-vertex-star-sphere' ).textContent;
-var sphereFragmentShader = document.getElementById( 'shader-fragment-star-sphere' ).textContent;
+  var sphereVertexShader   = document.getElementById( 'shader-vertex-star-sphere' ).textContent;
+  var sphereFragmentShader = document.getElementById( 'shader-fragment-star-sphere' ).textContent;
   // var sphereVertexShader = shader.sphere_vertex_shader;
   // var sphereFragmentShader = shader.sphere_fragment_shader;
   var sphereGeometry = new THREE.SphereGeometry(this.radius, 100, 100);
@@ -163,9 +182,14 @@ var sphereFragmentShader = document.getElementById( 'shader-fragment-star-sphere
   return sphereGeometry;
 }
 
+/*
+Creates the surrounding halo geometry for the star.
+
+@param Dictionary - shader: dict of shaders (value) and their names (keys) for the Star planet.
+*/
 StarPlanet.prototype.createHalo = function(shader) {
-  var haloVertexShader   = document.getElementById( 'shader-vertex-star-halo' ).textContent;
-  var haloFragmentShader = document.getElementById( 'shader-fragment-star-halo' ).textContent;
+  var haloVertexShader = document.getElementById('shader-vertex-star-halo').textContent;
+  var haloFragmentShader = document.getElementById('shader-fragment-star-halo').textContent;
   // var haloVertexShader = shader.halo_vertex_shader;
   // var haloFragmentShader = shader.halo_fragment_shader;
   var haloGeometry = new THREE.PlaneBufferGeometry( 4, 4, 40, 40 );
@@ -180,6 +204,11 @@ StarPlanet.prototype.createHalo = function(shader) {
     return haloGeometry;
 }
 
+/*
+Creates the surrounding halo geometry for the star.
+
+@param Dictionary - shader: dict of shaders (value) and their names (keys) for the Star planet.
+*/
 StarPlanet.prototype.createStar = function(shader) {
   var sphere = this.createSphereObject(shader);
   var halo = this.createHalo(shader);
@@ -187,6 +216,11 @@ StarPlanet.prototype.createStar = function(shader) {
   this.starObject.add(halo);
 }
 
+/*
+Loads the shaders for the star.
+
+@param callback function executes after the shaders have been loaded.
+*/
 StarPlanet.prototype.init = function(callback) {
   var initialShaders = {
     sphere_fragment_shader: 'libs/shaders/shader-fragment-star-sphere.glsl',
@@ -209,6 +243,11 @@ StarPlanet.prototype.init = function(callback) {
   }
 }
 
+/*
+Updates halo position and shader uniforms every frame.
+
+@param THREE.PerspectiveCamera - camera: reference to the camera being used in the scene.
+*/
 StarPlanet.prototype.updateFrames = function(camera) {
   this.starMaterialUniforms.time.value =+ new Date() - this.start_time;
   if (this.starObject.children.length > 0) {

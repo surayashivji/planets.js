@@ -842,93 +842,93 @@ star_object.add( halo_object );
 // /**
 //  * Presets
 //  */
-// function go_preset_red()
-// {
-//     colors.current = Object.create(colors.red);
-//     update_colors();
-// }
-//
-// function go_preset_blue()
-// {
-//     colors.current = Object.create(colors.blue);
-//     update_colors();
-// }
-//
-// function go_preset_green()
-// {
-//     colors.current = Object.create(colors.green);
-//     update_colors();
-// }
-//
-// function update_colors()
-// {
-//     star_uniforms.color_step_1.value = new THREE.Color(colors.current[0]);
-//     star_uniforms.color_step_2.value = new THREE.Color(colors.current[1]);
-//     star_uniforms.color_step_3.value = new THREE.Color(colors.current[2]);
-//     star_uniforms.color_step_4.value = new THREE.Color(colors.current[3]);
-//
-//     gui_manual_update = true;
-//     color_1.setValue(colors.current[0]);
-//     color_2.setValue(colors.current[1]);
-//     color_3.setValue(colors.current[2]);
-//     color_4.setValue(colors.current[3]);
-//     gui_manual_update = false;
-// }
+function go_preset_red()
+{
+    colors.current = Object.create(colors.red);
+    update_colors();
+}
 
-// /**
-//  * Dat GUI
-//  */
-// var gui         = new dat.GUI(),
-//     gui_params  = gui.addFolder('Params'),
-//     gui_presets = gui.addFolder('Presets'),
-//     gui_manual_update = false;
-//
-// gui_params.open();
-// var color_1 = gui_params.addColor(colors.current,'0').name('color 1'),
-//     color_2 = gui_params.addColor(colors.current,'1').name('color 2'),
-//     color_3 = gui_params.addColor(colors.current,'2').name('color 3'),
-//     color_4 = gui_params.addColor(colors.current,'3').name('color 4');
-// gui_params.add(star_uniforms.ratio_step_1,'value').min(0).max(1).step(0.01).name('step 1');
-// gui_params.add(star_uniforms.ratio_step_2,'value').min(0).max(1).step(0.01).name('step 2');
-// gui_params.add(star_uniforms.displacement,'value').min(0).max(1).step(0.0001).name('displacement');
-// gui_params.add(star_uniforms.time_multiplier,'value').min(0).max(0.01).step(0.00001).name('time multiplier');
-//
-// color_1.onChange(function(value)
-// {
-//     if(gui_manual_update)
-//         return;
-//     colors.current[0] = value;
-//     update_colors();
-// });
-//
-// color_2.onChange(function(value)
-// {
-//     if(gui_manual_update)
-//         return;
-//     colors.current[1] = value;
-//     update_colors();
-// });
-//
-// color_3.onChange(function(value)
-// {
-//     if(gui_manual_update)
-//         return;
-//     colors.current[2] = value;
-//     update_colors();
-// });
-//
-// color_4.onChange(function(value)
-// {
-//     if(gui_manual_update)
-//         return;
-//     colors.current[3] = value;
-//     update_colors();
-// });
-//
-// gui_presets.open();
-// gui_presets.add(window,'go_preset_red').name('red');
-// gui_presets.add(window,'go_preset_blue').name('blue');
-// gui_presets.add(window,'go_preset_green').name('green');
+function go_preset_blue()
+{
+    colors.current = Object.create(colors.blue);
+    update_colors();
+}
+
+function go_preset_green()
+{
+    colors.current = Object.create(colors.green);
+    update_colors();
+}
+
+function update_colors()
+{
+    star_uniforms.color_step_1.value = new THREE.Color(colors.current[0]);
+    star_uniforms.color_step_2.value = new THREE.Color(colors.current[1]);
+    star_uniforms.color_step_3.value = new THREE.Color(colors.current[2]);
+    star_uniforms.color_step_4.value = new THREE.Color(colors.current[3]);
+
+    gui_manual_update = true;
+    color_1.setValue(colors.current[0]);
+    color_2.setValue(colors.current[1]);
+    color_3.setValue(colors.current[2]);
+    color_4.setValue(colors.current[3]);
+    gui_manual_update = false;
+}
+
+/**
+ * Dat GUI
+ */
+var gui         = new dat.GUI(),
+    gui_params  = gui.addFolder('Params'),
+    gui_presets = gui.addFolder('Presets'),
+    gui_manual_update = false;
+
+gui_params.open();
+var color_1 = gui_params.addColor(colors.current,'0').name('color 1'),
+    color_2 = gui_params.addColor(colors.current,'1').name('color 2'),
+    color_3 = gui_params.addColor(colors.current,'2').name('color 3'),
+    color_4 = gui_params.addColor(colors.current,'3').name('color 4');
+gui_params.add(star_uniforms.ratio_step_1,'value').min(0).max(1).step(0.01).name('step 1');
+gui_params.add(star_uniforms.ratio_step_2,'value').min(0).max(1).step(0.01).name('step 2');
+gui_params.add(star_uniforms.displacement,'value').min(0).max(1).step(0.0001).name('displacement');
+gui_params.add(star_uniforms.time_multiplier,'value').min(0).max(0.01).step(0.00001).name('time multiplier');
+
+color_1.onChange(function(value)
+{
+    if(gui_manual_update)
+        return;
+    colors.current[0] = value;
+    update_colors();
+});
+
+color_2.onChange(function(value)
+{
+    if(gui_manual_update)
+        return;
+    colors.current[1] = value;
+    update_colors();
+});
+
+color_3.onChange(function(value)
+{
+    if(gui_manual_update)
+        return;
+    colors.current[2] = value;
+    update_colors();
+});
+
+color_4.onChange(function(value)
+{
+    if(gui_manual_update)
+        return;
+    colors.current[3] = value;
+    update_colors();
+});
+
+gui_presets.open();
+gui_presets.add(window,'go_preset_red').name('red');
+gui_presets.add(window,'go_preset_blue').name('blue');
+gui_presets.add(window,'go_preset_green').name('green');
 
 /**
  * Frame function
