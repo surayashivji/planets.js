@@ -260,6 +260,76 @@ StarPlanet.prototype.updateFrames = function(camera) {
   }
 }
 
+/*
+Sets up debugging for a Star Planet.
+*/
+StarPlanet.prototype.setupDebugging = function() {
+  this.gui = new dat.GUI();
+  this.gui_params  = this.gui.addFolder('Properties');
+  this.gui_presets = this.gui.addFolder('Predefined Colors');
+  this.gui_manual_update = false;
+
+  this.gui_params.open();
+
+  // var coronaColor = this.gui_params.addColor(this.colors.corona).name('Corona Color');
+  // var coreColor = this.gui_params.addColor(this.colors.core).name('Core Color');
+  // var innerBorderColor = this.gui_params.addColor(this.colors.innerBorder).name('Inner Border Color');
+  // var outerBorderColor = this.gui_params.addColor(this.colors.outerBorder).name('Outer Border Color');
+
+  this.gui_params.add(this.starMaterialUniforms.ratio_step_1,'value').min(0).max(1).step(0.01).name('Intensity');
+  this.gui_params.add(this.starMaterialUniforms.displacement,'value').min(0).max(1).step(0.0001).name('displacement');
+  this.gui_params.add(this.starMaterialUniforms.time_multiplier,'value').min(0).max(0.01).step(0.00001).name('time multiplier');
+
+  // this.gui_presets.open();
+  // this.gui_presets.add(window, 'this.showPresetPurple').name('Purple Star');
+  // this.gui_presets.add(window, 'showPresetBlue').name('Blue Star');
+  // this.gui_presets.add(window, 'showPresetGreen').name('Green Star');
+  // this.gui_presets.add(window, 'showPresetWhite').name('White Star');
+}
+
+StarPlanet.prototype.showPresetPurple = function() {
+  console.log("purple!!");
+}
+
+/*
+Upd
+*/
+StarPlanet.prototype.updateColorsDebugging = function() {
+  this.starMaterialUniforms.color_step_1.value = new THREE.Color(this.colors.corona);
+  this.starMaterialUniforms.color_step_2.value = new THREE.Color(this.colors.core);
+  this.starMaterialUniforms.color_step_3.value = new THREE.Color(this.colors.innerBorder);
+  this.starMaterialUniforms.color_step_4.value = new THREE.Color(starPlanetColor.outerBorder);
+
+  this.gui_manual_update = true;
+
+  // coronaColor.setValue(this.colors.corona);
+  // color_2.setValue(this.colors.core);
+  // color_3.setValue(this.colors.innerBorder);
+  // color_4.setValue(starPlanetColor.outerBorder);
+
+  this.gui_manual_update = false;
+}
+
+
+function go_preset_red()
+{
+    colors.current = Object.create(colors.red);
+    update_colors();
+}
+
+function go_preset_blue()
+{
+    colors.current = Object.create(colors.blue);
+    update_colors();
+}
+
+function go_preset_green()
+{
+    colors.current = Object.create(colors.green);
+    update_colors();
+}
+
+
 //////////////////////////////////////////////////////////////////////////////////
 // Procedural Planets: Planets that can be updated and changed in real time.
 //////////////////////////////////////////////////////////////////////////////////

@@ -604,19 +604,20 @@ function generateStarPlanet() {
   // add planet to the scene if it already hasn't been added
   if(!scene.getObjectByName('our-planet')) {
     scene.add(planet.starObject);
+    planet.setupDebugging();
   }
 }
 
+// Setup Scene, Camera, and Renderer
 var scene = new THREE.Scene();
-
 var camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100000);
 camera.position.z = 4;
-
 var renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('star-sketch'), alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
-
 renderer.setClearColor(0x000000, 1);
 
+// Create StarColor object for the star planet
+// Create and name the planet (naming it instead of adding it to the scene for demo purposes)
 var colors = new StarColor('#001159', '#0072ff', '#00c7ff', '#90f6ff', 0.4);
 var planet = new StarPlanet(1, colors, 0.03, 0.0005);
 planet.init(function(shader) {
@@ -624,6 +625,7 @@ planet.init(function(shader) {
   planet.starObject.name = "our-planet";
 });
 
+// Resize camera and renderer when the window is resized
 var resize = function() {
     renderer.setSize( window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio );
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -632,11 +634,12 @@ var resize = function() {
 window.onresize = resize;
 resize();
 
+// Mouse movement
 var updateFcts = [];
 var mouse = {x:0, y:0};
 document.addEventListener('mousemove', function(event) {
-  mouse.x = (event.clientX / window.innerWidth) - 0.5;
-  mouse.y = (event.clientY / window.innerHeight) - 0.5;
+  mouse.x = event.clientX / window.innerWidth;
+  mouse.y = event.clientY / window.innerHeight;
 }, false);
 updateFcts.push(function(delta, now) {
   camera.position.x += (mouse.x*5 - camera.position.x) * (delta*10);
@@ -644,7 +647,7 @@ updateFcts.push(function(delta, now) {
   camera.lookAt(scene.position);
 });
 
-// Render the scene
+// Render the scene  every frame
 updateFcts.push(function() {
   planet.updateFrames(camera);
   renderer.render(scene, camera);

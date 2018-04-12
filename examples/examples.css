@@ -37,6 +37,7 @@ input {
 .planet-info {
   margin: 3em;
   position: fixed;
+  background-color: transparent;
 }
 .planet-description {
   padding: 10px 0;
