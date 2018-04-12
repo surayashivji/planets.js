@@ -80,6 +80,8 @@ function StarPlanet(radius, starPlanetColor, particleDisplacement, timeMultiplie
   this.radius = radius;
   this.colors = starPlanetColor;
   this.shaders = {};
+  this.timeMultiplier = timeMultiplier;
+  this.displacement = particleDisplacement;
   this.starMaterialUniforms = {
     sphere_radius:
     {
@@ -99,7 +101,7 @@ function StarPlanet(radius, starPlanetColor, particleDisplacement, timeMultiplie
     time_multiplier:
     {
         type  : 'f',
-        value : 0.0005
+        value : this.timeMultiplier
     },
     color_step_1:
     {
@@ -134,16 +136,16 @@ function StarPlanet(radius, starPlanetColor, particleDisplacement, timeMultiplie
     displacement:
     {
         type  : 'f',
-        value : 0.03
+        value : this.displacement
     }
   };
 
   this.starObject = new THREE.Object3D();
+  this.start_time =+ new Date();
   THREE.Cache.enabled = true;
 }
 
 StarPlanet.prototype.createSphereObject = function(shader) {
-
 var sphereVertexShader   = document.getElementById( 'shader-vertex-star-sphere' ).textContent;
 var sphereFragmentShader = document.getElementById( 'shader-fragment-star-sphere' ).textContent;
   // var sphereVertexShader = shader.sphere_vertex_shader;
@@ -157,6 +159,7 @@ var sphereFragmentShader = document.getElementById( 'shader-fragment-star-sphere
       transparent    : true
   });
   var sphereGeometry = new THREE.Mesh(sphereGeometry, sphereMaterial);
+  sphereGeometry.name = "Sphere";
   return sphereGeometry;
 }
 
@@ -173,6 +176,7 @@ StarPlanet.prototype.createHalo = function(shader) {
       transparent    : true
     });
     var haloGeometry = new THREE.Mesh(haloGeometry, haloMaterial);
+    haloGeometry.name = "Halo";
     return haloGeometry;
 }
 
@@ -193,8 +197,6 @@ StarPlanet.prototype.init = function(callback) {
   var numberOfShaders = Object.keys(initialShaders).length;
   var manager = new THREE.LoadingManager();
   var loader = new THREE.FileLoader(manager);
-  // var loader = new THREE.XHRLoader();
-  var self = this;
   for (let key in initialShaders) {
     let value = initialShaders[key];
     loader.load(value, function(shaderContent) {
@@ -207,6 +209,17 @@ StarPlanet.prototype.init = function(callback) {
   }
 }
 
+StarPlanet.prototype.updateFrames = function(camera) {
+  this.starMaterialUniforms.time.value =+ new Date() - this.start_time;
+  if (this.starObject.children.length > 0) {
+    var halo = this.starObject.children[1];
+    this.starObject.children.forEach(function(element) {
+      if(element.name == "Halo") {
+        halo.lookAt(camera.position);
+      }
+    });
+  }
+}
 
 //////////////////////////////////////////////////////////////////////////////////
 // Procedural Planets: Planets that can be updated and changed in real time.
